@@ -17,13 +17,15 @@ public class OceanManager : MonoBehaviour
 {
     [SerializeField] int n_point = 0;
     [SerializeField] float peak = 1;
-     [SerializeField] float tilling = 1;
+    [SerializeField] float tilling = 1;
+    [SerializeField] float speed = 1;
     [SerializeField] float baseHeight  = 1;
     SpriteShapeController spc;
     List<Vector2> ScreenBorder = new List<Vector2>();
     [SerializeField][Range(0.1f, 1)] float y_multiplier = 0.5f;
     [SerializeField][Range(0.7f, 1.5f)] float x_multiplier = 1.1f;
 
+    [SerializeField] float rate = 0.1f;
     // [SerializeField] Vector2 test 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -35,16 +37,6 @@ public class OceanManager : MonoBehaviour
         ScreenBorder.Add(Camera.main.ViewportToWorldPoint(new Vector2(x_multiplier, y_multiplier)));
         ScreenBorder.Add(Camera.main.ViewportToWorldPoint(new Vector2(x_multiplier, 0)));
 
-        // ScreenBorder.Add(Camera.main.ViewportToWorldPoint(new Vector2(1 - x_multiplier, y_multiplier)));
-        // ScreenBorder.Add(Camera.main.ViewportToWorldPoint(new Vector2(x_multiplier, y_multiplier)));
-        // ScreenBorder.Add(Camera.main.ViewportToWorldPoint(new Vector2(x_multiplier, 0)));
-        // ScreenBorder.Add(Camera.main.ViewportToWorldPoint(new Vector2(1 - x_multiplier, 0)));
-
-        // ScreenBorder.Add(Camera.main.ViewportToWorldPoint(new Vector2(0 + x_multiplier, 1 - y_multiplier))); // Top Left
-        // ScreenBorder.Add(Camera.main.ViewportToWorldPoint(new Vector2(1 - x_multiplier, 1 - y_multiplier))); // Top Right
-        // ScreenBorder.Add(Camera.main.ViewportToWorldPoint(new Vector2(1 - x_multiplier, 0 + y_multiplier))); // Bottom Right
-        // ScreenBorder.Add(Camera.main.ViewportToWorldPoint(new Vector2(0 + x_multiplier, 0 + y_multiplier))); // Bottom Left
-        // // Debug.Log(pos);
 
     }
 
@@ -65,11 +57,17 @@ public class OceanManager : MonoBehaviour
         {
             // spline.
             Node node = NodeDispatcher(spline, i, n_point);
-            spline.InsertPointAt(i,node.Position);
-            // spline.SetTangentMode(i, ShapeTangentMode.Continuous);
+            spline.InsertPointAt(i, node.Position);
+            if(node.Left_Tangent.x!=0)
+            {
+                spline.SetTangentMode(i, ShapeTangentMode.Continuous);
+                spline.SetRightTangent(i,node.Right_Tangent);
+                 spline.SetLeftTangent(i,node.Left_Tangent);
+            }
+            
             // Vector3 dir = (nextPoint - prevPoint).normalized;
             // float curveStrength = 2f; // Bigger = smoother
-            // spline.SetRightTangent(i, dir * curveStrength);
+            // i, dir * curveStrength);
             // spline.SetLeftTangent(i, -dir * curveStrength);
         }
         spc.BakeCollider();
@@ -110,8 +108,14 @@ public class OceanManager : MonoBehaviour
         else
         {
             Node node = new Node();
-            node.Position = GenerateWave(spline, i,n);
+            node.Position = GenerateWave(spline, i, n);
+            
 
+            
+//      float tangentLength = 0.5f; // adjust this for curve intensity
+// node.Left_Tangent = new Vector2(-tangentLength, 0.5f);
+// node.Right_Tangent = new Vector2(tangentLength, 0.5f);
+            // node.Right_Tangent=
             return node;
 
          
@@ -129,11 +133,16 @@ public class OceanManager : MonoBehaviour
         // Debug.Log("offset:" + offset);
         float x = spline.GetPosition(i - 1).x + offset;
         // Debug.Log("spline.GetPosition(i - 1).x:"+spline.GetPosition(i - 1).x);
-        Debug.Log("MathF.Sin(i):" + MathF.Sin(i));
-        
+        Debug.Log(" Mathf.PerlinNoise(1,1):" + Mathf.PerlinNoise(i,1));
 
-
-        float y = baseHeight + MathF.Sin(i+tilling)*peak;
+    // float randomOffset = Mathf.PerlinNoise(i * 0.2f, Time.time *rate) * 2f - 1f;
+    // float yy = baseHeight 
+    // + Mathf.PerlinNoise(Mathf.Sin(i + tilling), 1)
+    // * Mathf.Sin(i + tilling)
+    // * (peak + randomOffset * 0.5f)
+    // + Mathf.PerlinNoise(i, 1);
+        // float yy = baseHeight + MathF.Sin(i+ tilling)* UnityEngine.Random.Range(peak - rate, peak + rate);
+        float y = baseHeight +( MathF.Sin(i+tilling)*peak);
         return new Vector2(x, y);
     }
     // Update is called once per frame
@@ -141,5 +150,11 @@ public class OceanManager : MonoBehaviour
     {
         UpdateBorder();
         OceanHandler();
+        MovingWaves();
+
+    }
+    void MovingWaves()
+    {
+        tilling += speed * Time.deltaTime;
     }
 }
