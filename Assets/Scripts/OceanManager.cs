@@ -62,13 +62,9 @@ public class OceanManager : MonoBehaviour
             {
                 spline.SetTangentMode(i, ShapeTangentMode.Continuous);
                 spline.SetRightTangent(i,node.Right_Tangent);
-                 spline.SetLeftTangent(i,node.Left_Tangent);
+                spline.SetLeftTangent(i,node.Left_Tangent);
             }
             
-            // Vector3 dir = (nextPoint - prevPoint).normalized;
-            // float curveStrength = 2f; // Bigger = smoother
-            // i, dir * curveStrength);
-            // spline.SetLeftTangent(i, -dir * curveStrength);
         }
         spc.BakeCollider();
     }
@@ -109,13 +105,6 @@ public class OceanManager : MonoBehaviour
         {
             Node node = new Node();
             node.Position = GenerateWave(spline, i, n);
-            
-
-            
-//      float tangentLength = 0.5f; // adjust this for curve intensity
-// node.Left_Tangent = new Vector2(-tangentLength, 0.5f);
-// node.Right_Tangent = new Vector2(tangentLength, 0.5f);
-            // node.Right_Tangent=
             return node;
 
          
@@ -126,22 +115,9 @@ public class OceanManager : MonoBehaviour
 
     Vector2 GenerateWave(Spline spline, int i,int n)
     {
-        // Debug.Log("i:" + i);
-        // Debug.Log("ScreenBorder[1].x:" + ScreenBorder[1].x);
-        // Debug.Log("ScreenBorder[0].x:" + ScreenBorder[0].x);
         float offset = (ScreenBorder[1].x - ScreenBorder[0].x) / (n + 1);
-        // Debug.Log("offset:" + offset);
         float x = spline.GetPosition(i - 1).x + offset;
-        // Debug.Log("spline.GetPosition(i - 1).x:"+spline.GetPosition(i - 1).x);
         Debug.Log(" Mathf.PerlinNoise(1,1):" + Mathf.PerlinNoise(i,1));
-
-    // float randomOffset = Mathf.PerlinNoise(i * 0.2f, Time.time *rate) * 2f - 1f;
-    // float yy = baseHeight 
-    // + Mathf.PerlinNoise(Mathf.Sin(i + tilling), 1)
-    // * Mathf.Sin(i + tilling)
-    // * (peak + randomOffset * 0.5f)
-    // + Mathf.PerlinNoise(i, 1);
-        // float yy = baseHeight + MathF.Sin(i+ tilling)* UnityEngine.Random.Range(peak - rate, peak + rate);
         float y = baseHeight +( MathF.Sin(i+tilling)*peak);
         return new Vector2(x, y);
     }

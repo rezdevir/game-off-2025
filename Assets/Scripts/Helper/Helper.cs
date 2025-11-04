@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 using UnityEngine;
@@ -71,7 +72,14 @@ static public class Helper
         return angle;
     }
 
+    static public Action FunctionByChance(List<Action> functions)
+    {
 
+
+        return functions[UnityEngine.Random.Range(0, functions.Count )];
+
+
+    }
 
 
 
@@ -94,7 +102,7 @@ static public class Helper
         string ID = "";
         for (int i = 0; i < length; i++)
         {
-            ID = ID + alphabet[Random.Range(0, alphabet.Length - 1)];
+            ID = ID + alphabet[UnityEngine.Random.Range(0, alphabet.Length - 1)];
         }
         return ID;
     

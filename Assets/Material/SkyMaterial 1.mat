@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SkyMaterial
+  m_Name: SkyMaterial 1
   m_Shader: {fileID: -6465566751694194690, guid: 6b7d2b7c0ceaf544caa6419b6abc011c, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -60,8 +60,8 @@ Material:
     - _ZWrite: 0
     m_Colors:
     - _Color: {r: 1, g: 0.5737432, b: 0, a: 1}
-    - _Color_bottom: {r: 1, g: 0.8352941, b: 0.5019608, a: 1}
-    - _Color_top: {r: 0.18039216, g: 0.0627451, b: 0.39607844, a: 1}
+    - _Color_bottom: {r: 1, g: 0.7019608, b: 0.2784314, a: 1}
+    - _Color_top: {r: 0.5294118, g: 0.80784315, b: 0.92156863, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
