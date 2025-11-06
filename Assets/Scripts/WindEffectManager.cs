@@ -10,17 +10,12 @@ public class WindEffectManager : MonoBehaviour
 
     [SerializeField] Vector2 Y_Range;
     [SerializeField] Vector2 X_Range;
-    // [SerializeField][Range(0.1f, 1)] float y_multiplier = 0.5f;
-    // [SerializeField][Range(0.7f, 1.5f)] float x_multiplier = 1.1f;
-    // List<Vector2> ScreenBorder = new List<Vector2>();
+
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        // ScreenBorder.Add(Camera.main.ViewportToWorldPoint(new Vector2(1 - x_multiplier, 0)));
-        // ScreenBorder.Add(Camera.main.ViewportToWorldPoint(new Vector2(1 - x_multiplier, y_multiplier)));
-        // ScreenBorder.Add(Camera.main.ViewportToWorldPoint(new Vector2(x_multiplier, y_multiplier)));
-        // ScreenBorder.Add(Camera.main.ViewportToWorldPoint(new Vector2(x_multiplier, 0)));
+   
         StartCoroutine(Intiator());
     }
 

@@ -22,23 +22,23 @@ public class WindEffectMovmentBehaviour : MonoBehaviour
 
      public void InitaiteMovingLinear(float dist)
     {
-        Debug.Log("InitaiteMovingLinear");
-        transform.DOMoveX(transform.position.x -dist, 2).SetEase(Ease.Linear).OnComplete(() => {
+        // Debug.Log("InitaiteMovingLinear");
+        transform.DOMoveX(transform.position.x +dist, 2).SetEase(Ease.Linear).OnComplete(() => {
 
                             mat.DOFade(0, 2).OnComplete(()=>Destroy(gameObject));
                            });;
     }
      public  void InitaiteMovingSway(float radius)
     {
-             Debug.Log("InitaiteMovingSway");
+            //  Debug.Log("InitaiteMovingSway");
         transform.GetChild(0).transform.localPosition = new Vector3(0, -radius, 0);
-        transform.DOMoveX(transform.position.x -5, 1).SetEase(Ease.Linear)
+        transform.DOMoveX(transform.position.x +5, 1).SetEase(Ease.Linear)
             .OnComplete(() =>
             {
-                transform.DOLocalRotate(new Vector3(0, 0, -360), 1.5f,RotateMode.WorldAxisAdd).SetEase(Ease.Linear)
+                transform.DOLocalRotate(new Vector3(0, 0, 360), 1.5f,RotateMode.WorldAxisAdd).SetEase(Ease.Linear)
                     .OnComplete(() =>
                     {
-                    transform.DOMoveX(transform.position.x -20, 2).SetEase(Ease.Linear)
+                    transform.DOMoveX(transform.position.x +20, 2).SetEase(Ease.Linear)
                         .OnComplete(() => {
 
                             mat.DOFade(0, 2).OnComplete(()=>Destroy(gameObject));

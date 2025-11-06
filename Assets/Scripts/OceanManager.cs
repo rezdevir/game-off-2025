@@ -117,7 +117,6 @@ public class OceanManager : MonoBehaviour
     {
         float offset = (ScreenBorder[1].x - ScreenBorder[0].x) / (n + 1);
         float x = spline.GetPosition(i - 1).x + offset;
-        Debug.Log(" Mathf.PerlinNoise(1,1):" + Mathf.PerlinNoise(i,1));
         float y = baseHeight +( MathF.Sin(i+tilling)*peak);
         return new Vector2(x, y);
     }
