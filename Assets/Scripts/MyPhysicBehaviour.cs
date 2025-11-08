@@ -47,14 +47,12 @@ public class MyPhysicBehaviour : MonoBehaviour
         MakeConstrain();
         GoDeep();
         GoUp();
-
-
     }
 
     void Update()
     {
-        //   Jumping();
         ClickManager();
+        Surffing();
     }
 
     void BoardRotation(float angle)
@@ -70,7 +68,7 @@ public class MyPhysicBehaviour : MonoBehaviour
         {
             if(state==PlayerState.Air)
             {
-                // rg.linearVelocityY -= 5;
+              
                 state = PlayerState.Air_Pressed;
                 
             }
@@ -150,14 +148,38 @@ public class MyPhysicBehaviour : MonoBehaviour
         if (collision.collider.CompareTag("ocean"))
         {
             // Get first contact point
-          
             ContactPoint2D contact = collision.GetContact(0);
+            if (state == PlayerState.Air_Pressed)
+            {
+                if (GetSlop(contact))
+                {
+                    //UpHill sink
+                    state = PlayerState.Surface_Pressed_Bad;
+                }
+                else
+                {
+                    //DownHill boost speed
+                    state = PlayerState.Surface_Pressed_Good;
+                }
+            }
+
+            if (state == PlayerState.Surface_Pressed_Bad)
+            {
+
+            }
+            if (state == PlayerState.Surface_Pressed_Good)
+            {
+
+            }
+
+
+
             Debug.Log("Get Slope Stay:" + GetSlop(contact));
 
 
-
-
         }
+
+
     }
 
     bool GetSlop(ContactPoint2D contact)
@@ -214,7 +236,7 @@ public class MyPhysicBehaviour : MonoBehaviour
             if (Sp_coolDown)
             {
                 //Reach Highest section 
-                // Now 
+                
                 state = PlayerState.Air;
                 rg.linearVelocity = Vector2.zero;
                 cl.isTrigger = false;
@@ -223,17 +245,71 @@ public class MyPhysicBehaviour : MonoBehaviour
         }
     }
 
+   
     void Surffing()
     {
-        //This Act Just when Pressed click
+        switch (state)
+        {
+            case PlayerState.Air_Pressed:
+                PressInAir();
+                break;
+            case PlayerState.Air:
+                NoPressAir();
+                break;
+            case PlayerState.Surface_Pressed_Bad:
+                SurfaceBadPress();
+                break;
+            case PlayerState.Surface_Pressed_Good:
+                SurfaceGoodPress();
+                break;
+
+        }
+
+    }
+
+     bool First_Time = true;
+    void PressInAir()
+    {
+                if (First_Time)
+                {
+                    First_Time = false;
+                    rg.linearVelocityY -= 5;
+                    BoardRotation(-30);
+                    cl.isTrigger = false;
+                }
+    }
+
+    void NoPressAir()
+    {                if (!First_Time)
+                {
+                    rg.linearVelocityY += 2;
+                    BoardRotation(0);
+                    cl.isTrigger = true;
+                    First_Time = true;
+                }
+    }
+
+    void SurfaceGoodPress()
+    {
+        Debug.Log("SurfaceGoodPress");
+
+        rg.linearVelocity = new Vector2(10, rg.linearVelocity.y);
+        state = PlayerState.Surface;
+    }
+    
+    void SurfaceBadPress()
+    {
+        Debug.Log("SurfaceBadPress");
+        state = PlayerState.Surface;
     }
     public void Jumping()
     {
-        if (PlayerInput.UI.Click.IsPressed())
+        if (PlayerInput.UI.Click.IsPressed() && state == PlayerState.Surface)
         {
             Debug.Log("PRESSED");
             rg.AddForceY(JumpForce);
-            rg.AddForceX(JumpForce / 2);
+            state = PlayerState.Air;
+            // rg.AddForceX(JumpForce / 2);
 
         }
     }
